@@ -69,6 +69,20 @@ class ViewController: UIViewController {
     return button
   }()
   
+  private let plusAlphaButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setTitle("+Alpha", for: .normal)
+    button.setTitleColor(.black, for: .normal)
+    return button
+  }()
+  
+  private let minusAlphaButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setTitle("-Alpha", for: .normal)
+    button.setTitleColor(.black, for: .normal)
+    return button
+  }()
+  
   private var topInfoLabel = UILabel(frame: .zero)
   private var bottomInfoLabel = UILabel(frame: .zero)
   
@@ -77,6 +91,9 @@ class ViewController: UIViewController {
   private var bottomWave: YXWaveView?
   
   private var selectedWave: YXWaveView?
+  
+  private let waveColor = UIColor(red: 177/255, green: 226/255, blue: 226/255, alpha: 1.0)
+  private var currentAlpha: CGFloat = 0.5
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -97,6 +114,7 @@ class ViewController: UIViewController {
      plusHeightButton, minusHeightButton,
      plusBaseButton, minusBaseButton,
      plusSpeedButton, minusSpeedButton,
+     plusAlphaButton, minusAlphaButton,
      topInfoLabel, bottomInfoLabel].forEach { v in
       view.addSubview(v)
       v.translatesAutoresizingMaskIntoConstraints = false
@@ -123,6 +141,10 @@ class ViewController: UIViewController {
     plusSpeedButton.leadingAnchor.constraint(equalTo: plusBaseButton.trailingAnchor, constant: 10).isActive = true
     plusSpeedButton.addTarget(self, action: #selector(increaseSpeed(_:)), for: .touchUpInside)
     
+    plusAlphaButton.topAnchor.constraint(equalTo: segControl.bottomAnchor, constant: 10).isActive = true
+    plusAlphaButton.leadingAnchor.constraint(equalTo: plusSpeedButton.trailingAnchor, constant: 10).isActive = true
+    plusAlphaButton.addTarget(self, action: #selector(increaseAlpha(_:)), for: .touchUpInside)
+    
     minusCurveButton.topAnchor.constraint(equalTo: plusCurveButton.bottomAnchor, constant: 10).isActive = true
     minusCurveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
     minusCurveButton.addTarget(self, action: #selector(decreaseCurve(_:)), for: .touchUpInside)
@@ -138,6 +160,10 @@ class ViewController: UIViewController {
     minusSpeedButton.topAnchor.constraint(equalTo: plusCurveButton.bottomAnchor, constant: 10).isActive = true
     minusSpeedButton.leadingAnchor.constraint(equalTo: minusBaseButton.trailingAnchor, constant: 10).isActive = true
     minusSpeedButton.addTarget(self, action: #selector(decreaseSpeed(_:)), for: .touchUpInside)
+    
+    minusAlphaButton.topAnchor.constraint(equalTo: plusCurveButton.bottomAnchor, constant: 10).isActive = true
+    minusAlphaButton.leadingAnchor.constraint(equalTo: minusSpeedButton.trailingAnchor, constant: 10).isActive = true
+    minusAlphaButton.addTarget(self, action: #selector(decreaseAlpha(_:)), for: .touchUpInside)
     
     topInfoLabel.font = UIFont.systemFont(ofSize: 8)
     topInfoLabel.numberOfLines = 0
@@ -166,7 +192,7 @@ class ViewController: UIViewController {
                           waveHeightPercentage: CGFloat,
                           baseHeightPercent: CGFloat,
                           speed: CGFloat) -> YXWaveView {
-    let wave = YXWaveView(color: UIColor(red: 177/255, green: 226/255, blue: 226/255, alpha: 0.5))
+    let wave = YXWaveView(color: waveColor.withAlphaComponent(currentAlpha))
     wave.backgroundColor = .clear
     
     wave.waveCurvature = curvature
@@ -252,12 +278,26 @@ class ViewController: UIViewController {
     }
   }
   
+  @objc func increaseAlpha(_ sender: Any) {
+    currentAlpha = currentAlpha + CGFloat(0.05)
+    topWave?.waveColor = waveColor.withAlphaComponent(currentAlpha)
+    bottomWave?.waveColor = waveColor.withAlphaComponent(currentAlpha)
+    updateInfo()
+  }
+  
+  @objc func decreaseAlpha(_ sender: Any) {
+    currentAlpha = currentAlpha - CGFloat(0.05)
+    topWave?.waveColor = waveColor.withAlphaComponent(currentAlpha)
+    bottomWave?.waveColor = waveColor.withAlphaComponent(currentAlpha)
+    updateInfo()
+  }
+  
   private func updateInfo() {
     if let topWave = topWave {
-      topInfoLabel.text = "Curve: \(topWave.waveCurvature). Height %: \(topWave.waveHeightPercentage). Base Height %: \(topWave.baseHeightPercent). Speed: \(topWave.waveSpeed)"
+      topInfoLabel.text = "Curve: \(topWave.waveCurvature). Height %: \(topWave.waveHeightPercentage). Base Height %: \(topWave.baseHeightPercent). Speed: \(topWave.waveSpeed). Alpha: \(currentAlpha)"
     }
     if let bottomWave = bottomWave {
-      bottomInfoLabel.text = "Curve: \(bottomWave.waveCurvature). Height %: \(bottomWave.waveHeightPercentage). Base Height %: \(bottomWave.baseHeightPercent). Speed: \(bottomWave.waveSpeed)"
+      bottomInfoLabel.text = "Curve: \(bottomWave.waveCurvature). Height %: \(bottomWave.waveHeightPercentage). Base Height %: \(bottomWave.baseHeightPercent). Speed: \(bottomWave.waveSpeed) Alpha: \(currentAlpha)"
     }
   }
 }
