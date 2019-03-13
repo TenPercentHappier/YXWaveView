@@ -128,7 +128,7 @@
 				TargetAttributes = {
 					CB79FF7F1D70035B00971FC3 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = CV2JKHPWU5;
+						DevelopmentTeam = 6C9N4WQWHL;
 						LastSwiftMigration = 0920;
 					};
 				};
@@ -304,7 +304,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = CV2JKHPWU5;
+				DEVELOPMENT_TEAM = 6C9N4WQWHL;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = YXWaveViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -320,7 +320,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = CV2JKHPWU5;
+				DEVELOPMENT_TEAM = 6C9N4WQWHL;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = YXWaveViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
